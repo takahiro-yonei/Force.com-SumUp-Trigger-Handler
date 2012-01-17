@@ -90,12 +90,12 @@ public without sharing class TrgHandler_SumUp {
 				Schema.DescribeFieldResult descFld = wkFld.getDescribe();
 				if(descFld.isCustom() && (descFld.getType() == Schema.DisplayType.Currency || descFld.getType() == Schema.DisplayType.Double || descFld.getType() == Schema.DisplayType.Integer || descFld.getType() == Schema.DisplayType.Percent)){
 					// 親側の項目名を生成する
-					String wkSumItemName = String.valueOf(wkFld).substring(0, String.valueOf(wkFld).length()-3) + POSTFIX_SUM + '__c';
+					String wkSumItemName = (descFld.getName().split('__').size() == 2 ? descFld.getName().split('__')[0] : descFld.getName().split('__')[1]) + POSTFIX_SUM + '__c';
 					if(pObjSchemaMap.containsKey(wkSumItemName)){
 						// 親側に項目が存在して、数値属性の項目だった場合、Mapに追加する
 						Schema.DescribeFieldResult pFld = pObjSchemaMap.get(wkSumItemName).getDescribe();
 						if(pFld.getType() == Schema.DisplayType.Currency || pFld.getType() == Schema.DisplayType.Double || pFld.getType() == Schema.DisplayType.Integer || pFld.getType() == Schema.DisplayType.Percent){
-							rtn.put(String.valueOf(wkFld), wkSumItemName);
+							rtn.put(descFld.getName(), wkSumItemName);
 						}
 					}
 				}
